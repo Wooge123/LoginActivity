@@ -20,9 +20,9 @@ public class ImgEditText extends EditText implements TextWatcher {
     private Drawable rightDrawable = null;
 
     // 控件是否有焦点
-    private boolean hasFoucs;
+    private boolean hasFocus;
 
-    private IMyRightDrawableClick mightDrawableClick;
+    private IMyRightDrawableClick mRightDrawableClick;
 
     public ImgEditText(Context context) {
         this(context, null);
@@ -78,12 +78,12 @@ public class ImgEditText extends EditText implements TextWatcher {
     @Override
     protected void onFocusChanged(boolean focused, int direction, Rect previouslyFocusedRect) {
         super.onFocusChanged(focused, direction, previouslyFocusedRect);
-        this.hasFoucs = focused;
-        if (focused) {
+        this.hasFocus = focused;
+        if (focused)
             setImageVisible(getText().length() > 0);
-        } else {
+        else
             setImageVisible(false);
-        }
+        
     }
 
     //设置清除图标的显示与隐藏，调用setCompoundDrawables为EditText绘制上去
@@ -102,12 +102,12 @@ public class ImgEditText extends EditText implements TextWatcher {
     @Override
     public void onTextChanged(CharSequence text, int start, int lengthBefore, int lengthAfter) {
 
-        if (hasFoucs) {
-            if (text.length() > 0) {
+        if (hasFocus) {
+            if (text.length() > 0)
                 setImageVisible(true);
-            } else {
+            else 
                 setImageVisible(false);
-            }
+            
         }
     }
 
@@ -135,8 +135,7 @@ public class ImgEditText extends EditText implements TextWatcher {
                         && (event.getX() < ((getWidth() - getPaddingRight())));
                 if (touchable) {
                     //调用点击事件
-                    mightDrawableClick.rightDrawableClick();
-//                    setText("");
+                    mRightDrawableClick.rightDrawableClick();
                 }
             }
         }
@@ -144,17 +143,17 @@ public class ImgEditText extends EditText implements TextWatcher {
         return super.onTouchEvent(event);
     }
 
-    public void setDrawableClick( IMyRightDrawableClick myMightDrawableClick){
-        this.mightDrawableClick = myMightDrawableClick;
+    public void setDrawableClick(IMyRightDrawableClick mMightDrawableClick) {
+        this.mRightDrawableClick = mMightDrawableClick;
+    }
+
+    public void setRightDrawable(Drawable drawable) {
+        rightDrawable = drawable;
+        setCompoundDrawablesWithIntrinsicBounds(leftDrawable, null, rightDrawable, null);
     }
 
     //自定义接口（实现右边图片点击事件）
     public interface IMyRightDrawableClick {
         void rightDrawableClick();
-    }
-
-    public void setRightDrawable(Drawable drawable){
-        rightDrawable = drawable;
-        setCompoundDrawablesWithIntrinsicBounds(leftDrawable, null, rightDrawable, null);
     }
 }
